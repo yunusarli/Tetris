@@ -71,9 +71,9 @@ class Shapes{
                 return false;
             }
     }
-    MoveLeft(){
+    MoveLeft(records){
         
-        if (this.CondLeft() & this.CondDown()){//en aşağıda ise hareket edemez
+        if (this.CondLeft() & this.CondDown() & this.CondLeftBox(records)){//en aşağıda ise hareket edemez
             this.x1 += this.step;
             this.x2 += this.step;
             this.x3 += this.step;
@@ -81,8 +81,8 @@ class Shapes{
         }
         return this.coords;
     }
-    MoveRight(){
-        if (this.CondRight() & this.CondDown()){
+    MoveRight(records){
+        if (this.CondRight() & this.CondDown() & this.CondRightBox(records)){
             this.x1 -= this.step;
             this.x2 -= this.step;
             this.x3 -= this.step;
@@ -92,6 +92,25 @@ class Shapes{
         return this.coords;
     }
 
+    CondLeftBox(records){
+        /* Solda herhangi bir kutunun olup olmamasının kontrolü */
+        let is_include = records.includes(this.x1+1) || 
+        records.includes(this.x2+1) || 
+        records.includes(this.x3+1) ||
+        records.includes(this.x4+1);
+
+        return !is_include;
+    }
+    
+    CondRightBox(records){
+        /* Sağda herhangi bir kutunun olup olmamasının kontrolü */
+        let is_include = records.includes(this.x1-1) || 
+        records.includes(this.x2-1) || 
+        records.includes(this.x3-1) ||
+        records.includes(this.x4-1);
+
+        return !is_include;
+    }
     CondDown(){
         /* Aşağı doğru yapılan hareketin koşulu */
         let cond_down = this.x1 + this.row_num<=99 &
@@ -159,7 +178,7 @@ class LShape extends Shapes {
     }
 
     IsValid(){
-        return this.x1%10 <= 7&this.x1>1;
+        return this.x1%10 <= 7&this.x1>2;
     }
 }
 
@@ -293,13 +312,17 @@ class Game{
         return this.coords_records
     }
 
-    MoveToDown(coord){
-        /* Eğer başarı koşulu sağlanırsa ve bir satırdaki kutular silinirse 
-            ve bunların altı boş ise, kutuları boşluğa taşıma işlemi.
-            Eğer alınan koordinatın altı boş ise onun da bir altına bakılır ve süreç böyle devam eder.
+    MoveToDown(specifieds){
+        /* Başarı koşulunun sağlanması halinde en küçük eleman alınır ve bu en küçük elemandan 
+        daha küçük olan tüm elemanların indexleri kutu aşağı düşürülür.
         */
-       let look_for = coord
-
+        let min = specifieds[0];
+        console.log("Min: ",min);
+        for (let i=0; i<this.coords_records.length;i++){
+            if (this.coords_records[i] < min){
+                this.coords_records[i] = this.coords_records[i]+10;
+            }   
+        }
     }
 
     SpecifyDeletings(){
@@ -307,12 +330,15 @@ class Game{
         Eğer kazanma koşullarından biri sağlanmışsa bunların silinmesi.
         */
         let specifieds = this.DeleteForWin();
+
         if ( specifieds != null){
+            this.MoveToDown(specifieds)
             for (let x of specifieds){
                 let index = this.coords_records.indexOf(x);
                 this.coords_records.splice(index,1);
                 
             }
+
         }
     
     }
@@ -365,7 +391,7 @@ class Game{
         let sshape = new SShape(13,14,4,5);
         let ishape = new IShape(3,4,5,6);
         let tshape = new TShape(14,15,5,16);
-        let all_shapes = [ishape,ishape,ishape,ishape,ishape];
+        let all_shapes = [lshape,oshape,sshape,ishape,tshape];
         return all_shapes;
 
     }
@@ -387,7 +413,7 @@ document.addEventListener('keypress',(e)=>{
     all_shapes = Game.GenerateShape();
 
     if (e.key=="a" || e.key == "A"){
-        sample.MoveRight();
+        sample.MoveRight(game.CoordsRecords());
         sample.Draw(game.collections,game.CoordsRecords());
     }else if (e.key == "s" || e.key == "S"){
 
@@ -396,11 +422,11 @@ document.addEventListener('keypress',(e)=>{
             sample = game.RecreateBoxes(all_shapes);
         }
 
-        game.SpecifyDeletings();
+        game.SpecifyDeletings();        
         sample.Draw(game.collections,game.CoordsRecords());
 
     }else if (e.key=="d" || e.key == "D"){
-        sample.MoveLeft();
+        sample.MoveLeft(game.CoordsRecords());
         sample.Draw(game.collections,game.CoordsRecords());
     }else if(e.key=="w" || e.key == "W"){
         
