@@ -1,0 +1,12 @@
+.box{
+    width: 2rem;
+    height: 2rem;
+    background-color: white;
+    margin: 0;
+}
+.container{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+    grid-row-gap: 0;
+    grid-column-gap: 0;
+}
