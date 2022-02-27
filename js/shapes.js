@@ -157,6 +157,10 @@ class LShape extends Shapes {
             return [this.x1,this.x2-11,this.x3-22,this.x4-13];
         }
     }
+
+    IsValid(){
+        return this.x1%10 <= 7&this.x1>1;
+    }
 }
 
 class SShape extends Shapes {
@@ -186,6 +190,9 @@ class SShape extends Shapes {
         }
 
     }
+    IsValid(){
+        return this.x1%10>=1 & this.x1%10<8;
+    }
 }
 
 class IShape extends Shapes {
@@ -205,6 +212,9 @@ class IShape extends Shapes {
             return [this.x1,this.x2+9,this.x3+18,this.x4+27];
         }
     }
+    IsValid(){
+        return this.x1%10 < 7;
+    }
 }
 
 class OShape extends Shapes {
@@ -217,6 +227,9 @@ class OShape extends Shapes {
 
     Variations(){
         return [this.x1,this.x2,this.x3,this.x4]
+    }
+    IsValid(){
+        return true;
     }
 
 }
@@ -247,6 +260,10 @@ class TShape extends Shapes{
 
         }
         
+    }
+    IsValid(){
+        /* Şekil değiştirirken diğer pencereden çıkışı engellemek */
+        return this.x1%10<=9 & this.x1%10>=1;
     }
 
 }
@@ -348,7 +365,7 @@ class Game{
         let sshape = new SShape(13,14,4,5);
         let ishape = new IShape(3,4,5,6);
         let tshape = new TShape(14,15,5,16);
-        let all_shapes = [lshape,oshape,sshape,ishape,tshape];
+        let all_shapes = [ishape,ishape,ishape,ishape,ishape];
         return all_shapes;
 
     }
@@ -386,8 +403,11 @@ document.addEventListener('keypress',(e)=>{
         sample.MoveLeft();
         sample.Draw(game.collections,game.CoordsRecords());
     }else if(e.key=="w" || e.key == "W"){
-        let variation_list = sample.Variations();
-        sample.coords = variation_list;
+        
+        if (sample.IsValid()){
+            let variation_list = sample.Variations();
+            sample.coords = variation_list;
+        }
         sample.Draw(game.collections,game.CoordsRecords());
     }
 })
