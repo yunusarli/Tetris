@@ -9,10 +9,11 @@ body{
 .container{
     width: 25.2%;
     border: 2px solid black;
-    height: 20.2em;
+    height: auto;
     background-color: red;
     position: absolute;
     left: 50%;
     top: 15%;
     transform: translate(-50%,0%);
+    z-index: -10;
 }

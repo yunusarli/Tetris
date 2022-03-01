@@ -1,0 +1,84 @@
+.game_over{
+    display: flex;
+    flex-direction: column;
+    width: 45em;
+    height: 30em;
+    padding: 10px 20px;
+    background-color: #a3f5f5;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-45%);
+    border-radius: 10px;
+    display: none;
+}
+
+.header, .info, .replay{
+    border-radius: 5px;
+    padding: 1em 1em;
+}
+.game_over .header{
+    width: 100%;
+    height: 20%;
+}
+.game_over .info{
+    width: 100%;
+    height: 50%;
+}
+
+.game_over .replay{
+    width: 100%;
+    height: 30%;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.head{
+    width: 90%;
+    font-size: 2em;
+    padding: .4em .4em;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+}
+.cross{
+    width: 10%;
+    font-size: 2em;
+    cursor: pointer;
+    text-align: right;
+    transition: all .5s ease-in-out;
+    border-radius: 3px;
+    text-align: center;
+    border: none;
+    outline: none;
+}
+.cross:hover{
+    border: 3px solid white
+}
+.info{
+    text-align: center;
+    padding: 2em 2em;
+    font-size: 1.3em;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 1.5em;
+}
+.replay{
+    text-align: center;
+    padding-top: 2.5em;
+}
+.replay button{
+    width: 7em;
+    height: 2.6em;
+    font-size: 1.3em;
+    border-radius: 10px;
+    border: 2px solid rgb(68, 65, 65);
+    cursor: pointer;
+    background-color: #00ffff;
+    color: white;
+    transition: all .5s ease;
+}
+
+.replay button:hover{
+    color: rgb(66, 58, 58);
+}

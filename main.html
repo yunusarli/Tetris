@@ -6,14 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/box_place.css">
+    <link rel="stylesheet" href="css/game_over.css">
     <title>Tetris Game</title>
 </head>
 <body>
+    <div class="game_over">
+        <div class="header">
+            <div class="head">Game Over!!!</div>
+            <div class="cross" title="close">&cross;</div>
+        </div>
+        <div class="info">
+            <p>
+                Unfortunately you lost the game. If you want to restart,
+                please click the restart button to restart. If you want to critisize your game click the 
+                cross sign and analyze your boxes.
+            </p>
+        </div>
+        <div class="replay">
+            <button class="restart">
+                Restart
+            </button>
+        </div>
+    </div>
     <div class="container">
 
     </div>
 </body>
 <script src="js/box_creator.js"></script>
 <script src="js/shapes.js"></script>
+<script src="js/game_over.js"></script>
+
 
 </html>

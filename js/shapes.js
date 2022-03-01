@@ -1,6 +1,8 @@
 // Tetris şekillerinin tutulması ve yeniden ayarlanabilmesi
 
 
+const POP_UP =  document.querySelector('.game_over');
+
 class Shapes{
     constructor(x1,x2,x3,x4){
         this.x1 = x1;
@@ -9,6 +11,10 @@ class Shapes{
         this.x4 = x4;
         this.row_num = 10; //kolon ve sütun sayısı
         this.step = 1; //atılacak adım sayısı
+        this.is_game_over=false;
+        let color_list = ["red","blue","purple","yellow","orange","green","lightgreen","blueviolet","aqua","pink"]
+        let random_num = parseInt(Math.random()*color_list.length); 
+        this.color = color_list[random_num];
     }
     get coords(){
         return {
@@ -31,25 +37,29 @@ class Shapes{
     }
     Draw(collections,records){
         let id;
-        let is_break = false//oyun bittiğinde ve gidilecek yer kalmadığında döngüden çıkılması için
+        
+       
         for (let element of collections){
             id = parseInt(element.getAttribute('data-index'))
             if (id == this.x1 || id == this.x2 || id == this.x3 || id == this.x4){
-                element.style.backgroundColor = "red";//hareket eden parçanın gittiği her yeri kırmızıya boya
+                
+                element.style.backgroundColor = this.color;//hareket eden parçanın gittiği her yeri kırmızıya boya
             }else{
-                element.style.backgroundColor = "white";
+                element.style.backgroundColor = "black";
                 for (let record of records){
                     //hareket kabiliyeti olmayan parçaları ekranda bırak. Aşağıda kalmış kayıtlı parçalar
                     try {
-                        document.getElementById(`box_${record}`).style.backgroundColor="red";
+                        document.getElementById(`box_${record}`).style.backgroundColor=this.color;
                     } catch (error) {
-                        console.log("Game Over!!!");
-                        is_break = true;
+
+                        this.is_game_over = true;
                         break;
                     }
                     
                 }
-                if (is_break){
+                if (this.is_game_over){
+                    
+                    POP_UP.style.display = "flex";  
                     break
                 }
                 
@@ -409,6 +419,13 @@ all_shapes = Game.GenerateShape();
 let game = new Game();
 let sample = game.RecreateBoxes(all_shapes);
 
+const restart = document.querySelector(".restart");
+restart.addEventListener('click',()=>{
+    all_shapes = Game.GenerateShape();
+    game = new Game();
+    sample = game.RecreateBoxes(all_shapes);
+    POP_UP.style.display="none";
+})
 document.addEventListener('keypress',(e)=>{
     all_shapes = Game.GenerateShape();
 
